@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
@@ -48,5 +49,13 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
         Route::post('role/show', 'show')->middleware(['permission:read role'])->name('role.show');
         Route::put('role', 'update')->middleware(['permission:update role'])->name('role.update');
         Route::delete('role', 'destroy')->middleware(['permission:delete role'])->name('role.destroy');
+    });
+
+    Route::controller(PermissionController::class)->group(function () {
+        Route::get('permission', 'index')->middleware(['permission:read permission'])->name('permission.index');
+        Route::post('permission', 'store')->middleware(['permission:create permission'])->name('permission.store');
+        Route::post('permission/show', 'show')->middleware(['permission:read permission'])->name('permission.show');
+        Route::put('permission', 'update')->middleware(['permission:update permission'])->name('permission.update');
+        Route::delete('permission', 'destroy')->middleware(['permission:delete permission'])->name('permission.destroy');
     });
 });
