@@ -3,82 +3,81 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use RealRashid\SweetAlert\Facades\Alert;
+use Spatie\Permission\Models\Role;
+use Symfony\Component\HttpFoundation\Response;
 
 class RoleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        $x['title']     = 'Role';
+        $x['data']      = Role::get();
+        return view('admin.role', $x);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'name'          => ['required'],
+            'guard_name'    => ['required'],
+        ]);
+        if ($validator->fails()) {
+            return back()->withErrors($validator)
+                ->withInput();
+        }
+        try {
+            Role::create([
+                'name'          => $request->name,
+                'guard_name'    => $request->guard_name,
+            ]);
+            Alert::success('Pemberitahuan', 'Data berhasil disimpan')->toToast();
+        } catch (\Throwable $th) {
+            Alert::error('Pemberitahuan', 'Data gagal disimpan : ' . $th->getMessage())->toToast();
+        }
+        return back();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function show(Request $request)
     {
-        //
+        $role = Role::find($request->id);
+        return response()->json([
+            'status'    => Response::HTTP_OK,
+            'message'   => 'Data role by id',
+            'data'      => $role
+        ], Response::HTTP_OK);
+    }
+    public function update(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name'          => ['required'],
+            'guard_name'    => ['required'],
+        ]);
+        if ($validator->fails()) {
+            return back()->withErrors($validator)
+                ->withInput();
+        }
+        try {
+            Role::find($request->id)->update([
+                'name'          => $request->name,
+                'guard_name'    => $request->guard_name,
+            ]);
+            Alert::success('Pemberitahuan', 'Data berhasil disimpan')->toToast();
+        } catch (\Throwable $th) {
+            Alert::error('Pemberitahuan', 'Data gagal disimpan : ' . $th->getMessage())->toToast();
+        }
+        return back();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function destroy(Request $request)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        try {
+            Role::find($request->id)->delete();
+            Alert::success('Pemberitahuan', 'Data berhasil dihapus')->toToast();
+        } catch (\Throwable $th) {
+            Alert::error('Pemberitahuan', 'Data gagal dihapus : ' . $th->getMessage())->toToast();
+        }
+        return back();
     }
 }

@@ -32,7 +32,7 @@
         </div>
         <div class="modal-body">
         <center>
-            <img src="{{ asset('loading.gif') }}" class="img" width="100">
+            <img src="{{ asset('loading.gif') }}" class="img" width="200">
         </center>
         </div>
     </div>

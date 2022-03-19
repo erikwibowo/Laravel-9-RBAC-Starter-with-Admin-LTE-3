@@ -91,7 +91,7 @@ class UserController extends Controller
         DB::beginTransaction();
         try {
             $user = User::find($request->id);
-            $user->update();
+            $user->update($data);
             $user->syncRoles($request->role);
             DB::commit();
             Alert::success('Pemberitahuan', 'Data berhasil disimpan')->toToast();
