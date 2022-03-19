@@ -46,7 +46,7 @@
                     </ul>
                 </li>
                 <li class="nav-item">
-                    <a href="#" data-toggle="modal" data-target="#modal-logout" class="nav-link">
+                    <a href="#" data-toggle="modal" data-target="#modal-logout" data-backdrop="static" data-keyboard="false" class="nav-link">
                     <i class="nav-icon fas fa-th"></i>
                     <p>
                         Widgets

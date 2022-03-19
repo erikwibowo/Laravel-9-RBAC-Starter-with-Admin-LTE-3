@@ -15,5 +15,11 @@
             $("#icontheme").attr("class","fas fa-sun");
             }
         });
+
+        $(function () {
+            $('.datatable').DataTable({
+                "stateSave": true
+            });
+        });
     });
 </script>
