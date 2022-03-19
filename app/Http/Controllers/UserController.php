@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Role;
 use RealRashid\SweetAlert\Facades\Alert;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
@@ -48,18 +50,67 @@ class UserController extends Controller
         return back();
     }
 
-    public function show($id)
+    public function show(Request $request)
     {
-        //
+        $user = UserResource::collection(User::where(['id' => $request->id])->get());
+        return response()->json([
+            'status'    => Response::HTTP_OK,
+            'message'   => 'Data user by id',
+            'data'      => $user[0]
+        ], Response::HTTP_OK);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        $rules = [
+            'name'      => ['required', 'string', 'max:255'],
+            'password'  => ['nullable', 'string'],
+            'role'      => ['required']
+        ];
+        
+        if ($request->email != $request->old_email) {
+            $rules['email'] = ['required', 'string', 'email', 'max:255', 'unique:users'];
+            $validator = Validator::make($request->all(), $rules);
+        }else {
+            $rules['email'] = ['required', 'string', 'email', 'max:255'];
+            $validator = Validator::make($request->all(), $rules);
+        }
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)
+                ->withInput();
+        }
+        $data = [
+            'name'      => $request->name,
+            'email'     => $request->email,
+        ];
+        if (!empty($request->password)) {
+            $data['password']   = bcrypt($request->password);
+        }
+        
+        DB::beginTransaction();
+        try {
+            $user = User::find($request->id);
+            $user->update();
+            $user->syncRoles($request->role);
+            DB::commit();
+            Alert::success('Pemberitahuan', 'Data berhasil disimpan')->toToast();
+        } catch (\Throwable $th) {
+            DB::rollback();
+            Alert::error('Pemberitahuan', 'Data gagal disimpan : ' . $th->getMessage())->toToast();
+        }
+        return back();
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        //
+        try {
+            $user = User::find($request->id);
+            $user->delete();
+            Alert::success('Pemberitahuan', 'Data berhasil dihapus')->toToast();
+        } catch (\Throwable $th) {
+            Alert::error('Pemberitahuan', 'Data gagal dihapus : ' . $th->getMessage())->toToast();
+        }
+        return back();
     }
 }

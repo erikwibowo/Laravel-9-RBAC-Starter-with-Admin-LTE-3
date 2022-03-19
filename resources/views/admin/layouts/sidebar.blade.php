@@ -35,7 +35,7 @@
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        @can('index user', User::class)
+                        @can('read user', User::class)
                             <li class="nav-item">
                                 <a href="{{ route('user.index') }}" class="nav-link {{ request()->routeIs('user.index') ? 'active':'' }}">
                                     <i class="fas fa-user nav-icon"></i>
