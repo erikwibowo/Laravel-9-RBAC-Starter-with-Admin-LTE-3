@@ -37,6 +37,7 @@
             <!-- /.content-wrapper -->
             @yield('modal')
             @include('admin.layouts.modal')
+            @include('sweetalert::alert')
             @include('admin.layouts.footer')
         </div>
         <!-- ./wrapper -->

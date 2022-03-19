@@ -2,7 +2,7 @@
 @section('content')
     @php
         if (!$errors->isEmpty()) {
-            // alert()->error('Pemberitahuan', implode('<br>', $errors->all()))->toToast()->toHtml();
+            alert()->error('Pemberitahuan', implode('<br>', $errors->all()))->toToast()->toHtml();
         }
     @endphp
     <div class="content-wrapper">

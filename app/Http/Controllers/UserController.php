@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Role;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class UserController extends Controller
 {
@@ -39,10 +40,10 @@ class UserController extends Controller
             ]);
             $user->assignRole($request->role);
             DB::commit();
-            // Alert::success('Pemberitahuan', 'Data berhasil disimpan')->toToast();
+            Alert::success('Pemberitahuan', 'Data berhasil disimpan')->toToast();
         } catch (\Throwable $th) {
             DB::rollback();
-            // Alert::error('Pemberitahuan', 'Data gagal disimpan : ' . $th->getMessage())->toToast();
+            Alert::error('Pemberitahuan', 'Data gagal disimpan : ' . $th->getMessage())->toToast();
         }
         return back();
     }
