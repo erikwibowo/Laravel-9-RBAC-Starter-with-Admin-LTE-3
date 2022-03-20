@@ -31,23 +31,26 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
-                            @can('create role', Role::class)
+                            @can('create role')
                             <div class="card-header">
                                 <h3 class="card-title">
-                                    <a href="#" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-tambah" data-backdrop="static" data-keyboard="false"><i class="fas fa-plus"></i> Tambah</a>
+                                    <button class="btn btn-sm btn-success" id="btn-tambah"><i class="fas fa-plus"></i> Tambah</button>
                                 </h3>
                             </div>
                             @endcan
                             <!-- /.card-header -->
-                            <div class="card-body">
+                            <div class="card-body table-responsive">
                                 <table class="table table-bordered table-hover datatable">
                                     <thead>
                                         <tr>
                                             <th>#</th>
                                             <th>Name</th>
                                             <th>Guard</th>
-                                            <th>Created</th>
-                                            <th>Action</th>
+                                            <th>Permission</th>
+                                            <th>Updated</th>
+                                            @canany(['update role', 'delete role'])
+                                                <th>Action</th>
+                                            @endcanany
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -56,17 +59,28 @@
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $i->name }}</td>
                                                 <td>{{ $i->guard_name }}</td>
-                                                <td>{{ $i->created_at }}</td>
                                                 <td>
-                                                    <div class="btn-group">
-                                                        @can('update role', Role::class)
-                                                            <button class="btn btn-sm btn-primary btn-edit" data-id="{{ $i->id }}"><i class="fas fa-pencil-alt"></i></button>
-                                                        @endcan
-                                                        @can('delete role', Role::class)
-                                                            <button class="btn btn-sm btn-danger btn-delete" data-id="{{ $i->id }}" data-name="{{ $i->name }}"><i class="fas fa-trash"></i></button>
-                                                        @endcan
-                                                    </div>
+                                                    @if ($i->name == 'superadmin' || count($i->permissions) == count($permission))
+                                                        All permission
+                                                    @else
+                                                        {{ $i->permissions->implode('name', '|') }}
+                                                    @endif
                                                 </td>
+                                                <td>{{ $i->updated_at }}</td>
+                                                @canany(['update role', 'delete role'])
+                                                    <td>
+                                                        <div class="btn-group">
+                                                            @can('update role')
+                                                                <button class="btn btn-sm btn-primary btn-edit" data-id="{{ $i->id }}"><i class="fas fa-pencil-alt"></i></button>
+                                                            @endcan
+                                                            @can('delete role')
+                                                                @if ($i->name != 'superadmin')
+                                                                    <button class="btn btn-sm btn-danger btn-delete" data-id="{{ $i->id }}" data-name="{{ $i->name }}"><i class="fas fa-trash"></i></button>
+                                                                @endif
+                                                            @endcan
+                                                        </div>
+                                                    </td>
+                                                @endcanany
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -88,6 +102,10 @@
 @section('js')
     <script>
         $(document).ready(function() {
+            $(document).on("click", '#btn-tambah', function() {
+                $('input:checkbox').prop('checked', false);
+                $('#modal-tambah').modal({backdrop: 'static', keyboard: false, show: true});
+            });
             $(document).on("click", '.btn-edit', function() {
                 let id = $(this).attr("data-id");
                 $('#modal-loading').modal({backdrop: 'static', keyboard: false, show: true});
@@ -100,8 +118,27 @@
                         _token: "{{ csrf_token() }}"
                     },
                     success: function(data) {
-                        // console.log(data);
+                        // console.log(data.data.permissions);
                         var data = data.data;
+                        var permissions = data.permissions;
+                        if (permissions.length == {{ count($permission) }}) {
+                            $("#checkAllu").prop('checked', true);
+                        }else{
+                            $("#checkAllu").prop('checked', false);
+                        }
+                        if (data.name == 'superadmin') {
+                            $('input:checkbox.permission').prop('checked', true);
+                            $('input:checkbox.permission').prop('disabled', true);
+                            $("#checkAllu").prop('checked', true);
+                            $("#checkAllu").prop('disabled', true);
+                        }else{
+                            $('input:checkbox.permission').prop('checked', false);
+                            $('input:checkbox.permission').prop('disabled', false);
+                            $("#checkAllu").prop('disabled', false);
+                        }
+                        for (let i = 0; i < permissions.length; i++) {
+                            $(`#${permissions[i].id}u`).prop('checked', true);
+                        }
                         $("#name").val(data.name);
                         $("#guard_name").val(data.guard_name);
                         $("#id").val(data.id);
@@ -117,6 +154,14 @@
                 $("#did").val(id);
                 $("#delete-data").html(name);
                 $('#modal-delete').modal({backdrop: 'static', keyboard: false, show: true});
+            });
+
+            $("#checkAll").click(function(){
+                $('input:checkbox').not(this).prop('checked', this.checked);
+            });
+
+            $("#checkAllu").click(function(){
+                $('input:checkbox').not(this).prop('checked', this.checked);
             });
         });
     </script>
@@ -156,6 +201,23 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+                        </div>
+                        <div class="input-group mt-2">
+                            <label>Permission</label>
+                        </div>
+                        <div class="input-group">
+                            <div class="icheck-primary col-md-3">
+                                <input class="form-check-input" type="checkbox" id="checkAll">
+                                <label class="form-check-label" for="checkAll">Check All</label>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            @foreach ($permission as $p)
+                                <div class="icheck-primary col-md-3">
+                                    <input class="form-check-input permission" type="checkbox" name="permissions[]" id="{{ $p->id }}" value="{{ $p->name }}">
+                                    <label class="form-check-label {{ strtok($p->name, ' ') == 'delete' ? 'text-danger':'' }}" for="{{ $p->id }}">{{ $p->name }}</label>
+                                </div>
+                            @endforeach
                         </div>
                 </div>
                 <div class="modal-footer justify-content-between">
@@ -202,6 +264,23 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+                        </div>
+                        <div class="input-group mt-2">
+                            <label>Permission</label>
+                        </div>
+                        <div class="input-group">
+                            <div class="icheck-primary col-md-3">
+                                <input class="form-check-input" type="checkbox" id="checkAllu">
+                                <label class="form-check-label" for="checkAllu">Check All</label>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            @foreach ($permission as $p)
+                                <div class="icheck-primary col-md-3">
+                                    <input class="form-check-input permission" type="checkbox" name="permissions[]" id="{{ $p->id }}u" value="{{ $p->name }}">
+                                    <label class="form-check-label {{ strtok($p->name, ' ') == 'delete' ? 'text-danger':'' }}" for="{{ $p->id }}u">{{ $p->name }}</label>
+                                </div>
+                            @endforeach
                         </div>
                 </div>
                 <div class="modal-footer justify-content-between">

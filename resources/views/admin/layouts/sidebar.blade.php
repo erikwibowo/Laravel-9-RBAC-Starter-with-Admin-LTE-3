@@ -30,12 +30,12 @@
                     <a href="#" class="nav-link {{ request()->routeIs('user.index', 'role.index', 'permission.index') ? 'active':'' }}">
                         <i class="nav-icon fas fa-database"></i>
                         <p>
-                            Master Data
+                            Access
                             <i class="right fas fa-angle-left"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
-                        @can('read user', User::class)
+                        @can('read user')
                             <li class="nav-item">
                                 <a href="{{ route('user.index') }}" class="nav-link {{ request()->routeIs('user.index') ? 'active':'' }}">
                                     <i class="fas fa-user nav-icon"></i>
@@ -45,7 +45,7 @@
                         @endcan
                     </ul>
                     <ul class="nav nav-treeview">
-                        @can('read role', Role::class)
+                        @can('read role')
                             <li class="nav-item">
                                 <a href="{{ route('role.index') }}" class="nav-link {{ request()->routeIs('role.index') ? 'active':'' }}">
                                     <i class="fas fa-user-cog nav-icon"></i>
@@ -55,7 +55,7 @@
                         @endcan
                     </ul>
                     <ul class="nav nav-treeview">
-                        @can('read permission', Permission::class)
+                        @can('read permission')
                             <li class="nav-item">
                                 <a href="{{ route('permission.index') }}" class="nav-link {{ request()->routeIs('permission.index') ? 'active':'' }}">
                                     <i class="fas fa-unlock nav-icon"></i>

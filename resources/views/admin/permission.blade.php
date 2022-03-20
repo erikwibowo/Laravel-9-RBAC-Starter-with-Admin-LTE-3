@@ -31,7 +31,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
-                            @can('create permission', Permission::class)
+                            @can('create permission')
                             <div class="card-header">
                                 <h3 class="card-title">
                                     <a href="#" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-tambah" data-backdrop="static" data-keyboard="false"><i class="fas fa-plus"></i> Tambah</a>
@@ -46,8 +46,10 @@
                                             <th>#</th>
                                             <th>Name</th>
                                             <th>Guard</th>
-                                            <th>Created</th>
-                                            <th>Action</th>
+                                            <th>Updated</th>
+                                            @canany(['update permission', 'delete permission'])
+                                                <th>Action</th>
+                                            @endcanany
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -56,17 +58,19 @@
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ $i->name }}</td>
                                                 <td>{{ $i->guard_name }}</td>
-                                                <td>{{ $i->created_at }}</td>
-                                                <td>
-                                                    <div class="btn-group">
-                                                        @can('update permission', Permission::class)
-                                                            <button class="btn btn-sm btn-primary btn-edit" data-id="{{ $i->id }}"><i class="fas fa-pencil-alt"></i></button>
-                                                        @endcan
-                                                        @can('delete permission', Permission::class)
-                                                            <button class="btn btn-sm btn-danger btn-delete" data-id="{{ $i->id }}" data-name="{{ $i->name }}"><i class="fas fa-trash"></i></button>
-                                                        @endcan
-                                                    </div>
-                                                </td>
+                                                <td>{{ $i->updated_at }}</td>
+                                                @canany(['update permission', 'delete permission'])
+                                                    <td>
+                                                        <div class="btn-group">
+                                                            @can('update permission')
+                                                                <button class="btn btn-sm btn-primary btn-edit" data-id="{{ $i->id }}"><i class="fas fa-pencil-alt"></i></button>
+                                                            @endcan
+                                                            @can('delete permission')
+                                                                <button class="btn btn-sm btn-danger btn-delete" data-id="{{ $i->id }}" data-name="{{ $i->name }}"><i class="fas fa-trash"></i></button>
+                                                            @endcan
+                                                        </div>
+                                                    </td>
+                                                @endcanany
                                             </tr>
                                         @endforeach
                                     </tbody>

@@ -31,7 +31,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
-                            @can('create user', User::class)
+                            @can('create user')
                             <div class="card-header">
                                 <h3 class="card-title">
                                     <a href="#" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-tambah" data-backdrop="static" data-keyboard="false"><i class="fas fa-plus"></i> Tambah</a>
@@ -47,8 +47,10 @@
                                             <th>Name</th>
                                             <th>Email</th>
                                             <th>Role</th>
-                                            <th>Created</th>
-                                            <th>Action</th>
+                                            <th>Updated</th>
+                                            @canany(['update user', 'delete user'])
+                                                <th>Action</th>
+                                            @endcanany
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -58,17 +60,19 @@
                                                 <td>{{ $i->name }}</td>
                                                 <td>{{ $i->email }}</td>
                                                 <td>{{ implode(",", $i->getRoleNames()->toArray()) }}</td>
-                                                <td>{{ $i->created_at }}</td>
-                                                <td>
-                                                    <div class="btn-group">
-                                                        @can('update user', User::class)
-                                                            <button class="btn btn-sm btn-primary btn-edit" data-id="{{ $i->id }}"><i class="fas fa-pencil-alt"></i></button>
-                                                        @endcan
-                                                        @can('delete user', User::class)
-                                                            <button class="btn btn-sm btn-danger btn-delete" data-id="{{ $i->id }}" data-name="{{ $i->name }}"><i class="fas fa-trash"></i></button>
-                                                        @endcan
-                                                    </div>
-                                                </td>
+                                                <td>{{ $i->updated_at }}</td>
+                                            @canany(['update user', 'delete user'])
+                                                    <td>
+                                                        <div class="btn-group">
+                                                            @can('update user')
+                                                                <button class="btn btn-sm btn-primary btn-edit" data-id="{{ $i->id }}"><i class="fas fa-pencil-alt"></i></button>
+                                                            @endcan
+                                                            @can('delete user')
+                                                                <button class="btn btn-sm btn-danger btn-delete" data-id="{{ $i->id }}" data-name="{{ $i->name }}"><i class="fas fa-trash"></i></button>
+                                                            @endcan
+                                                        </div>
+                                                    </td>
+                                                @endcanany
                                             </tr>
                                         @endforeach
                                     </tbody>
