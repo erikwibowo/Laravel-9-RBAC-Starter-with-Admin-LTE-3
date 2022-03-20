@@ -42,10 +42,10 @@ class UserController extends Controller
             ]);
             $user->assignRole($request->role);
             DB::commit();
-            Alert::success('Pemberitahuan', 'Data berhasil disimpan')->toToast();
+            Alert::success('Pemberitahuan', 'Data <b>' . $user->name . '</b> berhasil dibuat')->toToast()->toHtml();
         } catch (\Throwable $th) {
             DB::rollback();
-            Alert::error('Pemberitahuan', 'Data gagal disimpan : ' . $th->getMessage())->toToast();
+            Alert::error('Pemberitahuan', 'Data <b>' . $user->name . '</b> gagal dibuat : ' . $th->getMessage())->toToast()->toHtml();
         }
         return back();
     }
@@ -67,11 +67,11 @@ class UserController extends Controller
             'password'  => ['nullable', 'string'],
             'role'      => ['required']
         ];
-        
+
         if ($request->email != $request->old_email) {
             $rules['email'] = ['required', 'string', 'email', 'max:255', 'unique:users'];
             $validator = Validator::make($request->all(), $rules);
-        }else {
+        } else {
             $rules['email'] = ['required', 'string', 'email', 'max:255'];
             $validator = Validator::make($request->all(), $rules);
         }
@@ -87,17 +87,17 @@ class UserController extends Controller
         if (!empty($request->password)) {
             $data['password']   = bcrypt($request->password);
         }
-        
+
         DB::beginTransaction();
         try {
             $user = User::find($request->id);
             $user->update($data);
             $user->syncRoles($request->role);
             DB::commit();
-            Alert::success('Pemberitahuan', 'Data berhasil disimpan')->toToast();
+            Alert::success('Pemberitahuan', 'Data <b>' . $user->name . '</b> berhasil disimpan')->toToast()->toHtml();
         } catch (\Throwable $th) {
             DB::rollback();
-            Alert::error('Pemberitahuan', 'Data gagal disimpan : ' . $th->getMessage())->toToast();
+            Alert::error('Pemberitahuan', 'Data <b>' . $user->name . '</b> gagal disimpan : ' . $th->getMessage())->toToast()->toHtml();
         }
         return back();
     }
@@ -107,9 +107,9 @@ class UserController extends Controller
         try {
             $user = User::find($request->id);
             $user->delete();
-            Alert::success('Pemberitahuan', 'Data berhasil dihapus')->toToast();
+            Alert::success('Pemberitahuan', 'Data <b>' . $user->name . '</b> berhasil dihapus')->toToast()->toHtml();
         } catch (\Throwable $th) {
-            Alert::error('Pemberitahuan', 'Data gagal dihapus : ' . $th->getMessage())->toToast();
+            Alert::error('Pemberitahuan', 'Data <b>' . $user->name . '</b> gagal dihapus : ' . $th->getMessage())->toToast()->toHtml();
         }
         return back();
     }

@@ -39,10 +39,10 @@ class RoleController extends Controller
             ]);
             $role->givePermissionTo($request->permissions);
             DB::commit();
-            Alert::success('Pemberitahuan', 'Data berhasil disimpan')->toToast();
+            Alert::success('Pemberitahuan', 'Data <b>' . $role->name . '</b> berhasil dibuat')->toToast()->toHtml();
         } catch (\Throwable $th) {
             DB::rollback();
-            Alert::error('Pemberitahuan', 'Data gagal disimpan : ' . $th->getMessage())->toToast();
+            Alert::error('Pemberitahuan', 'Data <b>' . $role->name . '</b> gagal dibuat : ' . $th->getMessage())->toToast()->toHtml();
         }
         return back();
     }
@@ -76,10 +76,10 @@ class RoleController extends Controller
             ]);
             $role->syncPermissions($request->permissions);
             DB::commit();
-            Alert::success('Pemberitahuan', 'Data berhasil disimpan')->toToast();
+            Alert::success('Pemberitahuan', 'Data <b>' . $role->name . '</b> berhasil disimpan')->toToast()->toHtml();
         } catch (\Throwable $th) {
             DB::rollback();
-            Alert::error('Pemberitahuan', 'Data gagal disimpan : ' . $th->getMessage())->toToast();
+            Alert::error('Pemberitahuan', 'Data <b>' . $role->name . '</b> gagal disimpan : ' . $th->getMessage())->toToast()->toHtml();
         }
         return back();
     }
@@ -87,10 +87,11 @@ class RoleController extends Controller
     public function destroy(Request $request)
     {
         try {
-            Role::find($request->id)->delete();
-            Alert::success('Pemberitahuan', 'Data berhasil dihapus')->toToast();
+            $role = Role::find($request->id);
+            $role->delete();
+            Alert::success('Pemberitahuan', 'Data <b>' . $role->name . '</b> berhasil dihapus')->toToast()->toHtml();
         } catch (\Throwable $th) {
-            Alert::error('Pemberitahuan', 'Data gagal dihapus : ' . $th->getMessage())->toToast();
+            Alert::error('Pemberitahuan', 'Data <b>' . $role->name . '</b> gagal dihapus : ' . $th->getMessage())->toToast()->toHtml();
         }
         return back();
     }

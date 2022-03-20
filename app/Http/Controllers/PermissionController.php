@@ -28,13 +28,13 @@ class PermissionController extends Controller
                 ->withInput();
         }
         try {
-            Permission::create([
+            $permission = Permission::create([
                 'name'          => $request->name,
                 'guard_name'    => $request->guard_name,
             ]);
-            Alert::success('Pemberitahuan', 'Data berhasil disimpan')->toToast();
+            Alert::success('Pemberitahuan', 'Data <b>' . $permission->name . '</b> berhasil dibuat')->toToast()->toHtml();
         } catch (\Throwable $th) {
-            Alert::error('Pemberitahuan', 'Data gagal disimpan : ' . $th->getMessage())->toToast();
+            Alert::error('Pemberitahuan', 'Data <b>' . $permission->name . '</b> gagal dibuat : ' . $th->getMessage())->toToast()->toHtml();
         }
         return back();
     }
@@ -59,13 +59,14 @@ class PermissionController extends Controller
                 ->withInput();
         }
         try {
-            Permission::find($request->id)->update([
+            $permission = Permission::find($request->id);
+            $permission->update([
                 'name'          => $request->name,
                 'guard_name'    => $request->guard_name,
             ]);
-            Alert::success('Pemberitahuan', 'Data berhasil disimpan')->toToast();
+            Alert::success('Pemberitahuan', 'Data <b>' . $permission->name . '</b> berhasil disimpan')->toToast()->toHtml();
         } catch (\Throwable $th) {
-            Alert::error('Pemberitahuan', 'Data gagal disimpan : ' . $th->getMessage())->toToast();
+            Alert::error('Pemberitahuan', 'Data <b>' . $permission->name . '</b> gagal disimpan : ' . $th->getMessage())->toToast()->toHtml();
         }
         return back();
     }
@@ -73,10 +74,11 @@ class PermissionController extends Controller
     public function destroy(Request $request)
     {
         try {
-            Permission::find($request->id)->delete();
-            Alert::success('Pemberitahuan', 'Data berhasil dihapus')->toToast();
+            $permission = Permission::find($request->id);
+            $permission->delete();
+            Alert::success('Pemberitahuan', 'Data <b>' . $permission->name . '</b> berhasil dihapus')->toToast()->toHtml();
         } catch (\Throwable $th) {
-            Alert::error('Pemberitahuan', 'Data gagal dihapus : ' . $th->getMessage())->toToast();
+            Alert::error('Pemberitahuan', 'Data <b>' . $permission->name . '</b> gagal dihapus : ' . $th->getMessage())->toToast()->toHtml();
         }
         return back();
     }
