@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FileManagerController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -58,4 +59,6 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
         Route::put('permission', 'update')->middleware(['permission:update permission'])->name('permission.update');
         Route::delete('permission', 'destroy')->middleware(['permission:delete permission'])->name('permission.destroy');
     });
+
+    Route::get('filemanager', [FileManagerController::class, 'index'])->middleware(['permission:filemanager'])->name('filemanager');
 });

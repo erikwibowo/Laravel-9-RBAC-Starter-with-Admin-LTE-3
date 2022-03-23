@@ -67,6 +67,14 @@
                         </ul>
                     </li>
                 @endcanany
+                @can('filemanager')
+                    <li class="nav-item">
+                        <a href="{{ route('filemanager') }}" class="nav-link {{ request()->routeIs('filemanager') ? 'active':'' }}">
+                            <i class="nav-icon fas fa-folder"></i>
+                            <p>File Manager</p>
+                        </a>
+                    </li>
+                @endcan
                 <li class="nav-header"></li>
                 <li class="nav-item">
                 <a href="#" class="nav-link bg-danger" data-toggle="modal" data-target="#modal-logout" data-backdrop="static" data-keyboard="false">

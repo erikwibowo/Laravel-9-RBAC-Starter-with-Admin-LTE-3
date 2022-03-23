@@ -20,6 +20,7 @@
         <link rel="stylesheet" href="{{ asset('template/admin/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
         <!-- DataTables -->
         <link rel="stylesheet" href="{{ asset('template/admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+        @stack('style')
     </head>
     <body class="hold-transition sidebar-mini layout-fixed">
         @php
@@ -68,5 +69,6 @@
         <script src="{{ asset('template/admin/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js') }}"></script>
         <!-- AdminLTE App -->
         <script src="{{ asset('template/admin/dist/js/adminlte.js') }}"></script>
+        @stack('script')
     </body>
 </html>
