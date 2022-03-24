@@ -29,5 +29,7 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'read permission']);
         Permission::create(['name' => 'update permission']);
         Permission::create(['name' => 'delete permission']);
+
+        Permission::create(['name' => 'filemanager']);
     }
 }

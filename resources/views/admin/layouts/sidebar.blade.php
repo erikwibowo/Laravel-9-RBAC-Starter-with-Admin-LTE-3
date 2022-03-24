@@ -19,7 +19,7 @@
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent nav-legacy" data-widget="treeview" role="menu" data-accordion="false">
+            <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent nav-legacy nav-compact" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
                     <a href="{{ route('dashboard') }}" class="nav-link {{ request()->routeIs('dashboard') ? 'active':'' }}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -27,46 +27,33 @@
                     </a>
                 </li>
                 @canany(['read user', 'read role', 'read permission'])
-                    <li class="nav-item {{ request()->routeIs('user.index', 'role.index', 'permission.index') ? 'menu-open':'' }}">
-                        <a href="#" class="nav-link {{ request()->routeIs('user.index', 'role.index', 'permission.index') ? 'active':'' }}">
-                            <i class="nav-icon fas fa-database"></i>
-                            <p>
-                                Access
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            @can('read user')
-                                <li class="nav-item">
-                                    <a href="{{ route('user.index') }}" class="nav-link {{ request()->routeIs('user.index') ? 'active':'' }}">
-                                        <i class="fas fa-user nav-icon"></i>
-                                        <p>User</p>
-                                    </a>
-                                </li>
-                            @endcan
-                        </ul>
-                        <ul class="nav nav-treeview">
-                            @can('read role')
-                                <li class="nav-item">
-                                    <a href="{{ route('role.index') }}" class="nav-link {{ request()->routeIs('role.index') ? 'active':'' }}">
-                                        <i class="fas fa-user-cog nav-icon"></i>
-                                        <p>Role</p>
-                                    </a>
-                                </li>
-                            @endcan
-                        </ul>
-                        <ul class="nav nav-treeview">
-                            @can('read permission')
-                                <li class="nav-item">
-                                    <a href="{{ route('permission.index') }}" class="nav-link {{ request()->routeIs('permission.index') ? 'active':'' }}">
-                                        <i class="fas fa-unlock nav-icon"></i>
-                                        <p>Permission</p>
-                                    </a>
-                                </li>
-                            @endcan
-                        </ul>
-                    </li>
+                    <li class="nav-header">ACCESS</li>
                 @endcanany
+                @can('read user')
+                    <li class="nav-item">
+                        <a href="{{ route('user.index') }}" class="nav-link {{ request()->routeIs('user.index') ? 'active':'' }}">
+                            <i class="fas fa-user nav-icon"></i>
+                            <p>User</p>
+                        </a>
+                    </li>
+                @endcan
+                @can('read role')
+                    <li class="nav-item">
+                        <a href="{{ route('role.index') }}" class="nav-link {{ request()->routeIs('role.index') ? 'active':'' }}">
+                            <i class="fas fa-user-cog nav-icon"></i>
+                            <p>Role</p>
+                        </a>
+                    </li>
+                @endcan
+                @can('read permission')
+                    <li class="nav-item">
+                        <a href="{{ route('permission.index') }}" class="nav-link {{ request()->routeIs('permission.index') ? 'active':'' }}">
+                            <i class="fas fa-unlock nav-icon"></i>
+                            <p>Permission</p>
+                        </a>
+                    </li>
+                @endcan
+                <li class="nav-header">SETTINGS</li>
                 @can('filemanager')
                     <li class="nav-item">
                         <a href="{{ route('filemanager') }}" class="nav-link {{ request()->routeIs('filemanager') ? 'active':'' }}">
@@ -78,7 +65,7 @@
                 <li class="nav-header"></li>
                 <li class="nav-item">
                 <a href="#" class="nav-link bg-danger" data-toggle="modal" data-target="#modal-logout" data-backdrop="static" data-keyboard="false">
-                    <i class="fas fa-lock nav-icon"></i>
+                    <i class="fas fa-sign-out-alt nav-icon"></i>
                     <p>KELUAR</p>
                 </a>
                 </li>
