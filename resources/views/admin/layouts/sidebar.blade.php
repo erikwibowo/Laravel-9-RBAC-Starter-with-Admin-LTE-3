@@ -54,14 +54,6 @@
                     </li>
                 @endcan
                 <li class="nav-header ml-2">SETTINGS</li>
-                @can('read module')
-                    <li class="nav-item">
-                        <a href="{{ route('module.index') }}" class="nav-link {{ request()->routeIs('module.index') ? 'active':'' }}">
-                            <i class="nav-icon fas fa-ellipsis-v"></i>
-                            <p>Module</p>
-                        </a>
-                    </li>
-                @endcan
                 @can('filemanager')
                     <li class="nav-item">
                         <a href="{{ route('filemanager') }}" class="nav-link {{ request()->routeIs('filemanager') ? 'active':'' }}">
