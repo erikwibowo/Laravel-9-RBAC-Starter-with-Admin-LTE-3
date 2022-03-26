@@ -13,7 +13,7 @@ class {Module}Controller extends Controller
 {
     public function index()
     {
-        $x['title']     = {Model};
+        $x['title']     = "{Model}";
         $x['data']      = {Model}::get();
 
         return view('{module}::index', $x);
@@ -49,18 +49,8 @@ class {Module}Controller extends Controller
         ], Response::HTTP_OK);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string'
-        ]);
-
-        {Model}::findOrFail($id)->update([
-            'name' => $request->input('name')
-        ]);
-
-        return redirect(route('app.{module}.index'));
-
         $validator = Validator::make($request->all(), [
             'name'      => ['required', 'string', 'max:255']
         ]);
@@ -80,7 +70,7 @@ class {Module}Controller extends Controller
         return back();
     }
 
-    public function destroy($id)
+    public function destroy(Request $request)
     {
         try {
             ${model} = {Model}::find($request->id);

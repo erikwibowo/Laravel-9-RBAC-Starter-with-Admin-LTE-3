@@ -129,7 +129,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action={{ route('{module}.store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('{module}.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="input-group">
                             <label>Name</label>
