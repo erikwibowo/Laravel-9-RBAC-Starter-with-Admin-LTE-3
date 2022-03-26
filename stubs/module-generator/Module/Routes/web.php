@@ -1,12 +1,15 @@
 <?php
 
 use Modules\{Module}\Http\Controllers\{Module}Controller;
+use Illuminate\Support\Facades\Route;
+app()->make('router')->aliasMiddleware('permisson', \Spatie\Permission\Middlewares\PermissionMiddleware::class);
 
-Route::middleware('auth')->prefix('app/{module}')->group(function() {
-    Route::get('/', [{Module}Controller::class, 'index'])->name('app.{module}.index');
-    Route::get('create', [{Module}Controller::class, 'create'])->name('app.{module}.create');
-    Route::post('create', [{Module}Controller::class, 'store'])->name('app.{module}.store');
-    Route::get('edit/{id}', [{Module}Controller::class, 'edit'])->name('app.{module}.edit');
-    Route::patch('edit/{id}', [{Module}Controller::class, 'update'])->name('app.{module}.update');
-    Route::delete('delete/{id}', [{Module}Controller::class, 'destroy'])->name('app.{module}.delete');
+Route::middleware('auth')->prefix('admin/{module}')->group(function() {
+    Route::controller({Module}Controller::class)->group(function () {
+        Route::get('/', 'index')->middleware(['permisson:read {module}'])->name('{module}.index');
+        Route::post('/', 'store')->middleware(['permisson:create {module}'])->name('{module}.store');
+        Route::post('/show', 'show')->middleware(['permisson:create {module}'])->name('{module}.show');
+        Route::put('/', 'update')->middleware(['permisson:update {module}'])->name('{module}.update');
+        Route::delete('/', 'destroy')->middleware(['permisson:delete {module}'])->name('{module}.delete');
+    });
 });

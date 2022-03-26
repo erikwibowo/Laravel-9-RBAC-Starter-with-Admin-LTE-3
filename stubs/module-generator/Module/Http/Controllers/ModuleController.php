@@ -3,41 +3,50 @@
 namespace Modules\{Module}\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Routing\Controller;
 use Modules\{Module}\Models\{Model};
+use RealRashid\SweetAlert\Facades\Alert;
+use Symfony\Component\HttpFoundation\Response;
 
 class {Module}Controller extends Controller
 {
     public function index()
     {
-        ${module} = {Model}::get();
+        $x['title']     = {Model};
+        $x['data']      = {Model}::get();
 
-        return view('{module}::index', compact('{module}'));
-    }
-
-    public function create()
-    {
-        return view('{module}::create');
+        return view('{module}::index', $x);
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string'
+        $validator = Validator::make($request->all(), [
+            'name'      => ['required', 'string', 'max:255']
         ]);
-
-        {Model}::create([
-            'name' => $request->input('name')
-        ]);
-
-        return redirect(route('app.{module}.index'));
+        if ($validator->fails()) {
+            return back()->withErrors($validator)
+                ->withInput();
+        }
+        try {
+            ${model} = {Model}::create([
+                'name'      => $request->name
+            ]);
+            Alert::success('Pemberitahuan', 'Data <b>' . ${model}->name . '</b> berhasil dibuat')->toToast()->toHtml();
+        } catch (\Throwable $th) {
+            Alert::error('Pemberitahuan', 'Data <b>' . ${model}->name . '</b> gagal dibuat : ' . $th->getMessage())->toToast()->toHtml();
+        }
+        return back();
     }
 
-    public function edit($id)
+    public function show(Request $request)
     {
-        ${model} = {Model}::findOrFail($id);
-
-        return view('{module}::edit', compact('{model}'));
+        ${model} = {Model}::find($request->id);
+        return response()->json([
+            'status'    => Response::HTTP_OK,
+            'message'   => 'Data {model} by id',
+            'data'      => ${model}
+        ], Response::HTTP_OK);
     }
 
     public function update(Request $request, $id)
@@ -51,12 +60,35 @@ class {Module}Controller extends Controller
         ]);
 
         return redirect(route('app.{module}.index'));
+
+        $validator = Validator::make($request->all(), [
+            'name'      => ['required', 'string', 'max:255']
+        ]);
+        if ($validator->fails()) {
+            return back()->withErrors($validator)
+                ->withInput();
+        }
+        try {
+            ${model} = {Model}::find($request->id);
+            ${model}->update([
+                'name'  => $request->name
+            ]);
+            Alert::success('Pemberitahuan', 'Data <b>' . ${model}->name . '</b> berhasil disimpan')->toToast()->toHtml();
+        } catch (\Throwable $th) {
+            Alert::error('Pemberitahuan', 'Data <b>' . ${model}->name . '</b> gagal disimpan : ' . $th->getMessage())->toToast()->toHtml();
+        }
+        return back();
     }
 
     public function destroy($id)
     {
-        {Model}::findOrFail($id)->delete();
-
-        return redirect(route('app.{module}.index'));
+        try {
+            ${model} = {Model}::find($request->id);
+            ${model}->delete();
+            Alert::success('Pemberitahuan', 'Data <b>' . ${model}->name . '</b> berhasil dihapus')->toToast()->toHtml();
+        } catch (\Throwable $th) {
+            Alert::error('Pemberitahuan', 'Data <b>' . ${model}->name . '</b> gagal dihapus : ' . $th->getMessage())->toToast()->toHtml();
+        }
+        return back();
     }
 }

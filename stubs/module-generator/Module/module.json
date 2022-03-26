@@ -10,5 +10,14 @@
     ],
     "aliases": {},
     "files": [],
-    "requires": []
+    "requires": [],
+    "menu": [
+        {
+            "icon": "fas fa-circle",
+            "name": "{Module}",
+            "route": "{module}.index",
+            "permission": "read {module}"
+        }
+    ],
+    "permissions": ["{module}"]
 }
