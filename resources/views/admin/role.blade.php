@@ -66,7 +66,9 @@
                                                     <td>
                                                         <div class="btn-group">
                                                             @can('update role')
-                                                                <button class="btn btn-sm btn-primary btn-edit" data-id="{{ $i->id }}"><i class="fas fa-pencil-alt"></i></button>
+                                                                @if ($i->name != 'superadmin')
+                                                                    <button class="btn btn-sm btn-primary btn-edit" data-id="{{ $i->id }}"><i class="fas fa-pencil-alt"></i></button>
+                                                                @endif
                                                             @endcan
                                                             @can('delete role')
                                                                 @if ($i->name != 'superadmin')

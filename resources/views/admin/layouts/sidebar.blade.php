@@ -27,7 +27,7 @@
                     </a>
                 </li>
                 @canany(['read user', 'read role', 'read permission'])
-                    <li class="nav-header">ACCESS</li>
+                    <li class="nav-header ml-2">ACCESS</li>
                 @endcanany
                 @can('read user')
                     <li class="nav-item">
@@ -53,7 +53,7 @@
                         </a>
                     </li>
                 @endcan
-                <li class="nav-header">SETTINGS</li>
+                <li class="nav-header ml-2">SETTINGS</li>
                 @can('filemanager')
                     <li class="nav-item">
                         <a href="{{ route('filemanager') }}" class="nav-link {{ request()->routeIs('filemanager') ? 'active':'' }}">

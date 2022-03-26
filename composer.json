@@ -8,6 +8,7 @@
         "php": "^8.0.2",
         "alexusmai/laravel-file-manager": "^3.0",
         "biscolab/laravel-recaptcha": "^5.3",
+        "dcblogdev/laravel-module-generator": "^1.0",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.2",
         "laravel/sanctum": "^2.14.1",
