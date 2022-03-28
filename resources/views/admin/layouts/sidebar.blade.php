@@ -25,7 +25,54 @@
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>Dashboard</p>
                     </a>
-                </li>
+                </li>@php $i = 1; @endphp
+                @foreach ($modulemenus as $menus)
+                    @if ($menus['menu_count'] == 1)
+                        @foreach ($menus['menus'] as $menu)
+                            @if ($i == 1)
+                                @php
+                                    $perm[] = $menu['permission'];
+                                @endphp
+                                @canany($perm)
+                                    <li class="nav-header ml-2">MASTER DATA</li>
+                                @endcanany
+                            @endif
+                            @can($menu['permission'])
+                                <li class="nav-item">
+                                    <a href="{{ route($menu['route']) }}" class="nav-link {{ request()->routeIs($menu['route']) == strtolower($menu['name']) ? 'active':'' }}">
+                                        <i class="nav-icon {{ $menu['icon'] }}"></i>
+                                        <p>{{ $menu['name'] }}</p>
+                                    </a>
+                                </li>
+                            @endcan
+                            @php $i++; @endphp
+                        @endforeach
+                    @endif
+                @endforeach
+                @foreach ($modulemenus as $menus)
+                    @if ($menus['menu_count'] > 1)
+                        @foreach ($menus['menus'] as $menu)
+                            @if (count($menus['menus']) > 1)
+                                @if ($loop->iteration == 1)
+                                    @php
+                                        $perm[] = $menu['permission'];
+                                    @endphp
+                                    @canany($perm)
+                                        <li class="nav-header ml-2">{{ strtoupper($menus['module']) }}</li>
+                                    @endcanany
+                                @endif
+                                @can($menu['permission'])
+                                    <li class="nav-item">
+                                        <a href="{{ route($menu['route']) }}" class="nav-link {{ request()->routeIs($menu['route']) == strtolower($menu['name']) ? 'active':'' }}">
+                                            <i class="nav-icon {{ $menu['icon'] }}"></i>
+                                            <p>{{ $menu['name'] }}</p>
+                                        </a>
+                                    </li>
+                                @endcan
+                            @endif
+                        @endforeach
+                    @endif
+                @endforeach
                 @canany(['read user', 'read role', 'read permission'])
                     <li class="nav-header ml-2">ACCESS</li>
                 @endcanany

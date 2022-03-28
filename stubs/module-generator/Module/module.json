@@ -11,7 +11,7 @@
     "aliases": {},
     "files": [],
     "requires": [],
-    "menu": [
+    "menus": [
         {
             "icon": "fas fa-circle",
             "name": "{Module}",

@@ -59,6 +59,7 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
         Route::post('permission/show', 'show')->middleware(['permission:read permission'])->name('permission.show');
         Route::put('permission', 'update')->middleware(['permission:update permission'])->name('permission.update');
         Route::delete('permission', 'destroy')->middleware(['permission:delete permission'])->name('permission.destroy');
+        Route::get('permission/reload', 'reloadPermission')->middleware(['permission:create permission'])->name('permission.reload');
     });
 
     Route::get('filemanager', [FileManagerController::class, 'index'])->middleware(['permission:filemanager'])->name('filemanager');

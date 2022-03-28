@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Nwidart\Modules\Facades\Module;
 use RealRashid\SweetAlert\Facades\Alert;
 use Spatie\Permission\Models\Permission;
 use Symfony\Component\HttpFoundation\Response;
@@ -81,5 +82,53 @@ class PermissionController extends Controller
             Alert::error('Pemberitahuan', 'Data <b>' . $permission->name . '</b> gagal dihapus : ' . $th->getMessage())->toToast()->toHtml();
         }
         return back();
+    }
+    public function reloadPermission()
+    {
+        try {
+            $this->initModules();
+            Alert::success('Pemberitahuan', 'Permisiion berhasil diperbarui')->toToast()->toHtml();
+        } catch (\Throwable $th) {
+            Alert::error('Pemberitahuan', 'Permission gagal diperbarui : ' . $th->getMessage())->toToast()->toHtml();
+        }
+        return back();
+    }
+
+    private function initModules()
+    {
+        $modules = Module::getOrdered();
+        $modulemenus = [];
+
+        if ($modules) {
+            foreach ($modules as $module) {
+                $this->initModulePermissions($module);
+            }
+        }
+    }
+    private function getModuleDetails($module)
+    {
+        $moduleJson = $module->getPath() . '/module.json';
+        return json_decode(file_get_contents($moduleJson), true);
+    }
+
+    private function initModulePermissions($module)
+    {
+        $moduleDetails = $this->getModuleDetails($module);
+        if (!empty($moduleDetails['permissions'])) {
+            foreach ($moduleDetails['permissions'] as $permission) {
+                $this->initPermissionActions($permission);
+            }
+        }
+    }
+
+    private function initPermissionActions($permission)
+    {
+        $permissionMappings = ['delete', 'update', 'read', 'create'];
+
+        $permissionActions = [];
+        foreach ($permissionMappings as $permissionMapping) {
+            $name = $permissionMapping . ' ' . $permission;
+            $permissionActions[] = Permission::create(['name' => $name]);
+        }
     }
 }

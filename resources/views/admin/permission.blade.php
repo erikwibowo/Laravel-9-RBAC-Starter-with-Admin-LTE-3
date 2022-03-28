@@ -29,7 +29,10 @@
                             @can('create permission')
                             <div class="card-header">
                                 <h3 class="card-title">
-                                    <a href="#" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-tambah" data-backdrop="static" data-keyboard="false"><i class="fas fa-plus"></i> Tambah</a>
+                                    <div class="btn-group">
+                                        <a href="#" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-tambah" data-backdrop="static" data-keyboard="false"><i class="fas fa-plus"></i> Tambah</a>
+                                        <a href="{{ route('permission.reload') }}" class="btn btn-sm btn-warning"><i class="fas fa-sync-alt"></i> Reload</a>
+                                    </div>
                                 </h3>
                             </div>
                             @endcan
