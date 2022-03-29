@@ -18,6 +18,11 @@ class PermissionSeeder extends Seeder
         Permission::create(['name' => 'filemanager']);
         Permission::create(['name' => 'read module']);
 
+        Permission::create(['name' => 'delete setting']);
+        Permission::create(['name' => 'update setting']);
+        Permission::create(['name' => 'read setting']);
+        Permission::create(['name' => 'create setting']);
+
         Permission::create(['name' => 'delete user']);
         Permission::create(['name' => 'update user']);
         Permission::create(['name' => 'read user']);

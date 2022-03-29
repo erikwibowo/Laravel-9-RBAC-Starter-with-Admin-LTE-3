@@ -5,6 +5,7 @@ use App\Http\Controllers\FileManagerController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -65,4 +66,12 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('module', [ModuleController::class, 'index'])->middleware(['permission:read module'])->name('module.index');
 
     Route::get('filemanager', [FileManagerController::class, 'index'])->middleware(['permission:filemanager'])->name('filemanager');
+
+    Route::controller(SettingController::class)->group(function () {
+        Route::get('setting', 'index')->middleware(['permission:read setting'])->name('setting.index');
+        Route::post('setting', 'store')->middleware(['permission:create setting'])->name('setting.store');
+        Route::post('setting/show', 'show')->middleware(['permission:read setting'])->name('setting.show');
+        Route::put('setting', 'update')->middleware(['permission:update setting'])->name('setting.update');
+        Route::delete('setting', 'destroy')->middleware(['permission:delete setting'])->name('setting.destroy');
+    });
 });

@@ -194,8 +194,9 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
-        'ReCaptcha' => Biscolab\ReCaptcha\Facades\ReCaptcha::class,
+        'Alert'         => RealRashid\SweetAlert\Facades\Alert::class,
+        'ReCaptcha'     => Biscolab\ReCaptcha\Facades\ReCaptcha::class,
+        'Setting'       => App\Helpers\SettingHelper::class,
     ])->toArray(),
 
 ];
