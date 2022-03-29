@@ -16,6 +16,7 @@ class PermissionSeeder extends Seeder
     public function run()
     {
         Permission::create(['name' => 'filemanager']);
+        Permission::create(['name' => 'read module']);
 
         Permission::create(['name' => 'delete user']);
         Permission::create(['name' => 'update user']);

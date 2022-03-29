@@ -109,6 +109,14 @@
                         </a>
                     </li>
                 @endcan
+                @can('read module')
+                    <li class="nav-item">
+                        <a href="{{ route('module.index') }}" class="nav-link {{ request()->routeIs('module.index') ? 'active':'' }}">
+                            <i class="fas fa-network-wired nav-icon"></i>
+                            <p>Module</p>
+                        </a>
+                    </li>
+                @endcan
                 <li class="nav-header"></li>
                 <li class="nav-item">
                 <a href="#" class="nav-link bg-danger" data-toggle="modal" data-target="#modal-logout" data-backdrop="static" data-keyboard="false">
