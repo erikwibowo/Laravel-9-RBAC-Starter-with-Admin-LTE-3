@@ -16,10 +16,11 @@ return new class extends Migration
         Schema::create('settings', function (Blueprint $table) {
             $table->id();
             $table->string('key')->unique();
-            $table->string('value');
+            $table->text('value');
             $table->string('name');
             $table->string('type');
             $table->string('ext')->nullable();
+            $table->enum('category', ['information', 'contact', 'payment', 'email', 'api'])->nullable()->default('information');
             $table->timestamps();
         });
     }

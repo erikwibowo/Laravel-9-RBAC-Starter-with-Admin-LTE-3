@@ -14,5 +14,6 @@ class Setting extends Model
         'name',
         'type',
         'ext',
+        'category',
     ];
 }

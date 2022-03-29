@@ -13,7 +13,7 @@ class SettingController extends Controller
     public function index()
     {
         $x['title']     = 'Setting';
-        $x['data']      = Setting::get();
+        $x['category']  = Setting::select('category')->groupBy('category')->get();
         return view('admin.setting', $x);
     }
 
@@ -55,39 +55,23 @@ class SettingController extends Controller
 
     public function update(Request $request)
     {
-        $rules = [
-            'name'      => ['required', 'string', 'max:255'],
-            'password'  => ['nullable', 'string'],
-            'role'      => ['required']
-        ];
-
-        if ($request->email != $request->old_email) {
-            $rules['email'] = ['required', 'string', 'email', 'max:255', 'unique:users'];
-            $validator = Validator::make($request->all(), $rules);
-        } else {
-            $rules['email'] = ['required', 'string', 'email', 'max:255'];
-            $validator = Validator::make($request->all(), $rules);
-        }
-
+        $validator = Validator::make($request->all(), [
+            'key'       => ['required'],
+            'value'     => ['required']
+        ]);
+        
         if ($validator->fails()) {
             return back()->withErrors($validator)
                 ->withInput();
         }
-        $data = [
-            'name'      => $request->name,
-            'email'     => $request->email,
-        ];
-        if (!empty($request->password)) {
-            $data['password']   = bcrypt($request->password);
-        }
 
         try {
-            $setting = Setting::find($request->id);
-            $setting->update($data);
-            $setting->syncRoles($request->role);
-            Alert::success('Pemberitahuan', 'Data <b>' . $setting->name . '</b> berhasil disimpan')->toToast()->toHtml();
+            for ($i = 0; $i < count($request->key); $i++) { 
+                Setting::where(['key' => $request->key[$i]])->update(['value' => $request->value[$i]]);
+            }
+            Alert::success('Pemberitahuan', 'Setting berhasil disimpan')->toToast()->toHtml();
         } catch (\Throwable $th) {
-            Alert::error('Pemberitahuan', 'Data <b>' . $setting->name . '</b> gagal disimpan : ' . $th->getMessage())->toToast()->toHtml();
+            Alert::error('Pemberitahuan', 'Setting gagal disimpan : ' . $th->getMessage())->toToast()->toHtml();
         }
         return back();
     }
