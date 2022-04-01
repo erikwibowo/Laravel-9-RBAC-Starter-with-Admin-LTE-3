@@ -59,19 +59,5 @@ class SettingSeeder extends Seeder
             'type'      => 'textarea',
             'category'  => 'contact'
         ]);
-        Setting::create([
-            'key'       => 'recaptcha_site_key',
-            'value'     => '6LdsklQaAAAAALjf2v-twhjBwopOActU458Islcl',
-            'name'      => 'RECAPTCHA SITE KEY',
-            'type'      => 'text',
-            'category'  => 'api'
-        ]);
-        Setting::create([
-            'key'       => 'recaptcha_secret_key',
-            'value'     => '6LdsklQaAAAAAJdFHVSBpdq-4zlsgq-JfCmQ3mR9',
-            'name'      => 'RECAPTCHA SECRET KEY',
-            'type'      => 'text',
-            'category'  => 'api'
-        ]);
     }
 }
