@@ -88,13 +88,34 @@ password : superadmin
 ```
 
 ## Modules
-### build a new module module
+### build a new module
 ``` bash
 php artisan module:build
 type the module name (plural). example : posts, categoies, sliders etc.
 ```
-### All module will be generated in Module/{Module Name}
+### Enable module
+``` bash
+php artisan module:enable {module name}
+```
+### Disable module
+``` bash
+php artisan module:disable {module name}
+```
+### All module will be generated in root/Modules/{Module Name}
 ### To automatically update permission, go to permission page and click the reload button
+### Change module config
+``` bash
+Update the module config in root/Modules/{module name}/module.json
+"menus": [
+    {
+        "icon": "fas fa-image",
+        "name": "{Module Name}",
+        "route": "route.name",
+        "permission": "read {module name}"
+    }
+],
+"permissions": ["{module name}"]
+```
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
