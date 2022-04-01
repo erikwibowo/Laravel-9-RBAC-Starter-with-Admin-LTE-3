@@ -1,3 +1,101 @@
+## Features
+- Login Page
+    [![login.png](https://i.postimg.cc/vmCY7mwC/login.png)](https://postimg.cc/67Lxtt3h)
+- User Management
+    [![user-management.png](https://i.postimg.cc/sDfrhWZv/user-management.png)](https://postimg.cc/LhWwdnDp)
+- Role Management
+    [![role-management.png](https://i.postimg.cc/tCvLnMjM/role-management.png)](https://postimg.cc/w7JWSF3X)
+- Permission Management
+    [![permission-management.png](https://i.postimg.cc/gJK7zMs4/permission-management.png)](https://postimg.cc/YGhR8zJm)
+- Dynamic website setting
+    [![website-setting.png](https://i.postimg.cc/MTzsF7wB/website-setting.png)](https://postimg.cc/zLPSLRVD)
+- View installed module
+    [![module-view.png](https://i.postimg.cc/JzJP764J/module-view.png)](https://postimg.cc/ZWbrVLNK)
+- File manager
+    [![file-manager.png](https://i.postimg.cc/mDdSpK8x/file-manager.png)](https://postimg.cc/FdLc7WMG)
+- File picker
+    [![file-picker.png](https://i.postimg.cc/Fz7VMGBY/file-picker.png)](https://postimg.cc/n9fm7KZx)
+
+## Packages
+- [Admin LTE 3 Template](https://github.com/ColorlibHQ/AdminLTE)
+- Laravel UI (Bootstrap)
+- Laravel Auth
+- [Google recaptcha](https://laravel-recaptcha-docs.biscolab.com/docs/intro)
+- [Spatie](https://spatie.be/docs/laravel-permission/v5/introduction)
+- [Sweet Alert](https://github.com/realrashid/sweet-alert)
+- [File Manager](https://github.com/alexusmai/laravel-file-manager)
+- [Laravel Module](https://nwidart.com/laravel-modules/v6/introduction)
+- [Laravel Module Generator](https://github.com/dcblogdev/laravel-module-generator)
+
+## Requirements
+- php 8
+- mysql
+- composer
+
+## How To Install
+### Clone repository
+``` bash
+git clone https://github.com/erikwibowo/Laravel-9-RBAC-Starter-with-Admin-LTE-3.git
+```
+### Change directory to directory project
+``` bash
+cd .\Laravel-9-RBAC-Starter-with-Admin-LTE-3\
+```
+### Intsall packages
+``` bash
+composer install
+```
+### Copy environment example file
+``` bash
+cp .env.example .env
+```
+### Create database 'admin_lte3'
+### Change some configuration in .env file from root project
+``` bash
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=admin_lte3
+DB_USERNAME=root
+DB_PASSWORD=
+```
+### Config google recapthca key in .env
+- Go to [googlr recaptcha v2 admin console](https://www.google.com/recaptcha/admin)
+``` bash
+RECAPTCHA_SITE_KEY=YOUR_API_SITE_KEY
+RECAPTCHA_SECRET_KEY=YOUR_API_SECRET_KEY
+```
+### Generate Key
+```bash
+php artisan key:generate
+```
+### Create storage link
+``` bash
+php artisan storage:link
+```
+### Database migration and seed data
+``` bash
+php artisan migrate:fresh --seed
+```
+### Run in development server
+``` bash
+php artisan serve
+```
+### Login with
+``` bash
+email : superadmin@superadmin.com
+password : superadmin
+```
+
+## Modules
+### build a new module module
+``` bash
+php artisan module:build
+type the module name (plural). example : posts, categoies, sliders etc.
+```
+### All module will be generated in Module/{Module Name}
+### To automatically update permission, go to permission page and click the reload button
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
 <p align="center">
