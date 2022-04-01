@@ -18,7 +18,7 @@ class SettingSeeder extends Seeder
         Setting::create([
             'key'       => 'app_name',
             'value'     => 'Laravel RBAC Starter',
-            'name'      => 'Application Name',
+            'name'      => 'Application Short Name',
             'type'      => 'text',
             'category'  => 'information'
         ]);
