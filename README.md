@@ -102,7 +102,7 @@ php artisan module:enable {module name}
 ``` bash
 php artisan module:disable {module name}
 ```
-### All module will be generated in root/Modules/{Module Name}
+### All module files will be generated in root/Modules/{Modulename}
 ### To automatically update permission, go to permission page and click the reload button
 ### Change module config
 ``` bash
@@ -110,31 +110,31 @@ Update the module config in root/Modules/{module name}/module.json
 "menus": [
     {
         "icon": "fas fa-image",
-        "name": "{Module Name}",
+        "name": "{ModuleName}",
         "route": "route.name",
-        "permission": "read {module name}"
+        "permission": "read {modulename}"
     }
 ],
 "permissions": ["{module name}"]
 ```
 ### If you need add menu in created module
 ``` bash
-Update the module config in root/Modules/{module name}/module.json
+Update the module config in root/Modules/{Modulename}/module.json
 "menus": [
     {
         "icon": "fas fa-image",
         "name": "{Module Name}",
         "route": "route.name",
-        "permission": "read {module name}"
+        "permission": "read {modulename}"
     },
     {
         "icon": "fas fa-images",
         "name": "{Module Name}",
         "route": "route.name",
-        "permission": "read {module name}"
+        "permission": "read {modulename}"
     }
 ],
-"permissions": ["{module name}", "{module name}"]
+"permissions": ["{modulename}", "{modulename}"]
 ```
 ### Then reload the permission in Permission > Reload Permission
 
