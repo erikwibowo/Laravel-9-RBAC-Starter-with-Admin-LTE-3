@@ -15,7 +15,7 @@ class PermissionController extends Controller
     {
         $x['title']     = 'Permission';
         $x['data']      = Permission::get();
-        return view('admin.Permission', $x);
+        return view('admin.permission', $x);
     }
 
     public function store(Request $request)
