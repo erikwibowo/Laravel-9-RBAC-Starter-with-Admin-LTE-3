@@ -7,7 +7,7 @@
     [![role-management.png](https://i.postimg.cc/tCvLnMjM/role-management.png)](https://postimg.cc/w7JWSF3X)
 - Permission Management
     [![permission-management.png](https://i.postimg.cc/gJK7zMs4/permission-management.png)](https://postimg.cc/YGhR8zJm)
-- Dynamic website setting
+- Dynamic website settings
     [![website-setting.png](https://i.postimg.cc/MTzsF7wB/website-setting.png)](https://postimg.cc/zLPSLRVD)
 - View installed module
     [![module-view.png](https://i.postimg.cc/JzJP764J/module-view.png)](https://postimg.cc/ZWbrVLNK)
@@ -21,6 +21,7 @@
 - Laravel UI (Bootstrap)
 - Laravel Auth
 - [Google recaptcha](https://laravel-recaptcha-docs.biscolab.com/docs/intro)
+- [Laravel Debugbar](https://github.com/barryvdh/laravel-debugbar)
 - [Spatie](https://spatie.be/docs/laravel-permission/v5/introduction)
 - [Sweet Alert](https://github.com/realrashid/sweet-alert)
 - [File Manager](https://github.com/alexusmai/laravel-file-manager)
@@ -65,7 +66,7 @@ DB_PASSWORD=
 RECAPTCHA_SITE_KEY=YOUR_API_SITE_KEY
 RECAPTCHA_SECRET_KEY=YOUR_API_SECRET_KEY
 ```
-### Generate Key
+### Generate laravel key
 ```bash
 php artisan key:generate
 ```
@@ -91,7 +92,7 @@ password : superadmin
 ### build a new module
 ``` bash
 php artisan module:build
-type the module name (plural). example : posts, categoies, sliders etc.
+type the module name (plural). example : posts, categories, sliders etc.
 ```
 ### Enable module
 ``` bash
@@ -116,6 +117,26 @@ Update the module config in root/Modules/{module name}/module.json
 ],
 "permissions": ["{module name}"]
 ```
+### If you need add menu in created module
+``` bash
+Update the module config in root/Modules/{module name}/module.json
+"menus": [
+    {
+        "icon": "fas fa-image",
+        "name": "{Module Name}",
+        "route": "route.name",
+        "permission": "read {module name}"
+    },
+    {
+        "icon": "fas fa-images",
+        "name": "{Module Name}",
+        "route": "route.name",
+        "permission": "read {module name}"
+    }
+],
+"permissions": ["{module name}", "{module name}"]
+```
+### Then reload the permission in Permission > Reload Permission
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
 
