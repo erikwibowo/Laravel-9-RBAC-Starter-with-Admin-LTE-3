@@ -97,38 +97,20 @@ class PermissionController extends Controller
     private function initModules()
     {
         $modules = Module::getOrdered();
-        $modulemenus = [];
 
-        if ($modules) {
-            foreach ($modules as $module) {
-                $this->initModulePermissions($module);
+        foreach ($modules as $module) {
+            $moduleJson = json_decode(file_get_contents($module->getPath() . '/module.json', true));
+            $permissions = $moduleJson->permissions;
+            for ($i = 0; $i < count($permissions); $i++) {
+                $permissionMappings = ['delete', 'update', 'read', 'create'];
+                foreach ($permissionMappings as $permissionMapping) {
+                    $name = $permissionMapping . ' ' . $permissions[$i];
+                    $permission = Permission::where(['name' => $name])->count();
+                    if ($permission == 0) {
+                        Permission::create(['name' => $name]);
+                    }
+                }
             }
-        }
-    }
-    private function getModuleDetails($module)
-    {
-        $moduleJson = $module->getPath() . '/module.json';
-        return json_decode(file_get_contents($moduleJson), true);
-    }
-
-    private function initModulePermissions($module)
-    {
-        $moduleDetails = $this->getModuleDetails($module);
-        if (!empty($moduleDetails['permissions'])) {
-            foreach ($moduleDetails['permissions'] as $permission) {
-                $this->initPermissionActions($permission);
-            }
-        }
-    }
-
-    private function initPermissionActions($permission)
-    {
-        $permissionMappings = ['delete', 'update', 'read', 'create'];
-
-        $permissionActions = [];
-        foreach ($permissionMappings as $permissionMapping) {
-            $name = $permissionMapping . ' ' . $permission;
-            $permissionActions[] = Permission::create(['name' => $name]);
         }
     }
 }
