@@ -61,7 +61,9 @@ DB_USERNAME=root
 DB_PASSWORD=
 ```
 ### Config google recapthca key in .env
-- Go to [googlr recaptcha v2 admin console](https://www.google.com/recaptcha/admin)
+- Go to [google recaptcha v2 admin console](https://www.google.com/recaptcha/admin)
+- If you run in localhost add this domains <br>
+    [![domains.jpg](https://i.postimg.cc/VNjLmqjV/278022947-5419401621416772-3068878710146094302-n.jpg)](https://postimg.cc/1g3ZKN7G)
 ``` bash
 RECAPTCHA_SITE_KEY=YOUR_API_SITE_KEY
 RECAPTCHA_SECRET_KEY=YOUR_API_SECRET_KEY
